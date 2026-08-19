@@ -45,3 +45,4 @@ Các chức năng này cần quyền do **Shizuku** cấp (không cần root má
 | `UserService.java` / `IUserService.aidl` | Tiến trình thực thi lệnh shell với quyền shell |
 | `AnalyticsService.java` | Áp dụng / phục hồi cài đặt hệ thống |
 | `OptimizationHistory.java` | Lưu tối đa 3 lần lịch sử gần nhất |
+Hiện Tại App Bản Quyền Của App Thuộc Về Cá Nhân Lev1z x Device,Nghiêm Cấm Các Hành Vi Crack App Thành Của Bản Thân Rồi Đem Bán.
