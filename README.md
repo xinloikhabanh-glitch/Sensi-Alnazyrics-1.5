@@ -1,4 +1,4 @@
-# Sensi Analytics 1.0
+# Sensi Analytics 1.5
 
 Ứng dụng Android (Java) phân tích cấu hình thiết bị và đề xuất thông số tối ưu
 cho Free Fire, sử dụng Shizuku API để thực thi một số lệnh cài đặt hệ thống an toàn.
