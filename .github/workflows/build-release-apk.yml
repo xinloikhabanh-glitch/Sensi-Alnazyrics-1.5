@@ -1,11 +1,12 @@
-name: Build Sensi Analytics APK
+name: Build Sensi Analytics Release APK
 
 on:
   push:
+    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
-  build:
+  build-release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -41,11 +42,17 @@ jobs:
         with:
           gradle-version: '8.2'
 
-      - name: Build debug APK
-        run: gradle --no-daemon assembleDebug
+      - name: Build release APK (signed with fixed debug keystore for testing)
+        run: gradle --no-daemon assembleRelease
 
-      - name: Upload APK artifact
+      - name: Rename APK with build number
+        run: |
+          mkdir -p app/build/outputs/apk/release/renamed
+          cp app/build/outputs/apk/release/app-release.apk \
+             "app/build/outputs/apk/release/renamed/SensiAnalytics-v1.5-release-run${{ github.run_number }}.apk"
+
+      - name: Upload release APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SensiAnalytics-debug-apk-run${{ github.run_number }}
-          path: app/build/outputs/apk/debug/*.apk
+          name: SensiAnalytics-release-apk-run${{ github.run_number }}
+          path: app/build/outputs/apk/release/renamed/*.apk
