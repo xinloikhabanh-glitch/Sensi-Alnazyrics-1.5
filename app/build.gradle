@@ -14,13 +14,29 @@ android {
         versionName "1.5"
     }
 
+    // FIX: dùng 1 file keystore CỐ ĐỊNH được commit sẵn trong repo (app/debug.keystore)
+    // thay vì để Gradle tự tạo debug keystore ngẫu nhiên trên mỗi máy CI. Nếu không có
+    // bước này, mỗi lần GitHub Actions chạy sẽ sinh ra 1 khoá ký khác nhau -> APK build
+    // sau sẽ bị Android từ chối cài vì "xung đột chữ ký" với bản build trước (dù cùng
+    // package name). Khoá này CHỈ dùng để test cài đặt, không dùng để phát hành Play Store.
+    signingConfigs {
+        debug {
+            storeFile file("debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+    }
+
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            // Ký bản release bằng debug keystore (khoá test có sẵn của Android SDK)
-            // để máy thật/máy ảo cài đặt được trực tiếp. Đây KHÔNG phải khoá
-            // dùng để phát hành lên Play Store - chỉ phục vụ mục đích test.
+            // Dùng CHUNG khoá debug cố định ở trên để bản release và bản debug luôn
+            // tương thích chữ ký với nhau - cài đè lên nhau được, không bị lỗi xung đột.
             signingConfig signingConfigs.debug
         }
     }
